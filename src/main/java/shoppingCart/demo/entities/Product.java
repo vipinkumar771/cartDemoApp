@@ -1,9 +1,11 @@
 package shoppingCart.demo.entities;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
 @Data
+@Component
 @Entity
 public class Product {
     @Id
