@@ -1,0 +1,93 @@
+package shoppingCart.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import shoppingCart.demo.dto.ProductDTO;
+import shoppingCart.demo.entities.Product;
+import shoppingCart.demo.global.Constants;
+import shoppingCart.demo.service.CategoryService;
+import shoppingCart.demo.service.ProductService;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class ProductController {
+    /* PRODUCT SECTION CONTROLLERS START */
+
+    @Autowired
+    CategoryService categoryService;
+
+    @Autowired
+    ProductService productService;
+
+    @Autowired
+    Product product;
+    @GetMapping("/admin/products")
+    public String getAllProducts(Model model) {
+        model.addAttribute("products", productService.getAllProducts());
+        return "products";
+    }
+
+    @GetMapping("/admin/products/add")
+    public String addProductsGet(Model model) {
+        model.addAttribute("productDTO", new ProductDTO());
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "productsAdd";
+    }
+
+    @PostMapping("/admin/products/add")
+    public String addProductsPost(@ModelAttribute("productDTO") ProductDTO productDTO,
+                                  @RequestParam("productImage") MultipartFile file,
+                                  @RequestParam("imgName") String imgName) throws IOException {
+
+        product.setId(productDTO.getId());
+        product.setName(productDTO.getName());
+        product.setCategory(categoryService.findCategoryById(productDTO.getCategoryId()).get());
+        product.setPrice(productDTO.getPrice());
+        product.setWeight(productDTO.getWeight());
+        product.setDescription(productDTO.getDescription());
+
+        String imageUUID;
+        if (!file.isEmpty()) {
+            imageUUID = file.getOriginalFilename();
+            Path fileNameAndPath = Paths.get(Constants.imagesDirectory, imageUUID);
+            Files.write(fileNameAndPath, file.getBytes());
+        } else {
+            imageUUID = imgName;
+        }
+        product.setImageName(imageUUID);
+        productService.addProduct(product);
+        return Constants.Redirections.adminProducts;
+    }
+
+    @GetMapping("/admin/product/delete/{id}")
+    public String removeProduct(@PathVariable int id) {
+        productService.removeProductById(id);
+        return Constants.Redirections.adminProducts;
+    }
+
+    @GetMapping(Constants.ApiEndpointsMapping.updateProduct)
+    public String updateProduct(@PathVariable long id, Model model) {
+        if(productService.getProductById(id).isPresent()){
+            Product product = productService.getProductById(id).get();
+            ProductDTO productDTO = new ProductDTO();
+            productDTO.setId(product.getId());
+            productDTO.setName(product.getName());
+            productDTO.setCategoryId(product.getCategory().getId());
+            productDTO.setPrice(product.getPrice());
+            productDTO.setWeight(product.getWeight());
+            productDTO.setDescription(product.getDescription());
+            productDTO.setImageName(product.getImageName());
+
+            model.addAttribute(Constants.Functionalities.categories, categoryService.getAllCategories());
+            model.addAttribute(Constants.DTO.productDTO, productDTO);
+        }
+
+        return Constants.Redirections.productsAdd;
+    }
+
+}

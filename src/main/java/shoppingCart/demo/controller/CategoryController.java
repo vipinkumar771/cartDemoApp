@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 @Controller
-public class AdminController {
+public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
