@@ -18,7 +18,7 @@ public class Constants {
         public static final String updateProduct = "/admin/product/update/{id}";
         public static final String addProduct = "/admin/products/add";
         public static final String shopByCategory = "/shop/category/{id}";
-        public static final String viewProduct = "/shop/viewproduct/{id}";
+        public static final String viewProduct = "/shop/viewProduct/{id}";
 
     }
 
