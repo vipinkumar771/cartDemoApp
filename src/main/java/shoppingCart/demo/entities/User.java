@@ -1,10 +1,9 @@
 package shoppingCart.demo.entities;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import lombok.NoArgsConstructor;;
 import java.util.List;
 @NoArgsConstructor
 @Entity

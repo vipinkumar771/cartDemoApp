@@ -1,8 +1,8 @@
 package shoppingCart.demo.entities;
+import jakarta.persistence.*;
 import lombok.Data;
+import jakarta.validation.constraints.NotEmpty;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Data
