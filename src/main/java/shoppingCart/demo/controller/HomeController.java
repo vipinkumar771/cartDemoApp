@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import shoppingCart.demo.global.GlobalData;
 import shoppingCart.demo.service.CategoryService;
 import shoppingCart.demo.service.ProductService;
@@ -16,7 +17,7 @@ public class HomeController {
     @Autowired
     ProductService productService;
 
-    @GetMapping({"/", "/ home"})
+    @GetMapping({"/", "/home"})
     public String home(Model model){
         model.addAttribute("cartCount", GlobalData.cart.size());
         return "index";
