@@ -1,10 +1,5 @@
 package shoppingCart.demo.controller;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -108,16 +103,16 @@ public class CategoryController {
         }
         product.setImageName(imageUUID);
         productService.addProduct(product);
-        return Constants.Redirections.adminProducts;
+        return  "redirect:/admin/products";
     }
 
     @GetMapping("/admin/product/delete/{id}")
     public String removeProduct(@PathVariable int id) {
         productService.removeProductById(id);
-        return Constants.Redirections.adminProducts;
+        return  "redirect:/admin/products";
     }
 
-    @GetMapping(Constants.ApiEndpointsMapping.updateProduct)
+    @GetMapping("/admin/product/update/{id}")
     public String updateProduct(@PathVariable long id, Model model) {
         if(productService.getProductById(id).isPresent()){
             Product product = productService.getProductById(id).get();
@@ -130,10 +125,9 @@ public class CategoryController {
             productDTO.setDescription(product.getDescription());
             productDTO.setImageName(product.getImageName());
 
-            model.addAttribute(Constants.Functionalities.categories, categoryService.getAllCategories());
-            model.addAttribute(Constants.DTO.productDTO, productDTO);
+            model.addAttribute("categories", categoryService.getAllCategories());
+            model.addAttribute("productDTO", productDTO);
         }
-
-        return Constants.Redirections.productsAdd;
+        return "productsAdd";
     }
 }

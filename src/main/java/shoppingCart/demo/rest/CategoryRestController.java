@@ -2,12 +2,15 @@
 //
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.http.ResponseEntity;
+//import org.springframework.ui.Model;
 //import org.springframework.web.bind.annotation.*;
+//import shoppingCart.demo.dto.ProductDTO;
 //import shoppingCart.demo.entities.Category;
 //import shoppingCart.demo.entities.Product;
 //import shoppingCart.demo.service.CategoryService;
 //import shoppingCart.demo.service.ProductService;
 //import java.util.List;
+//import java.util.Optional;
 //
 //@RestController
 //public class CategoryRestController {
@@ -30,6 +33,17 @@
 //    public ResponseEntity<String> addCategories(@ModelAttribute("category") Category category){
 //        categoryService.addCategory(category);
 //        return ResponseEntity.ok("Category Added Successfully");
+//    }
+//
+//    @PutMapping("/admin/categories/update/{id}")
+//    public ResponseEntity<String> updateCategory(@PathVariable int id, Category category) {
+//        Optional<Category> cat = categoryService.findCategoryById(id);
+//        if (cat.isPresent()) {
+//           categoryService.addCategory(category);
+//           return ResponseEntity.ok("Category updated Successfully");
+//        } else {
+//            return ResponseEntity.ok("Category Not updated");
+//        }
 //    }
 //
 //   @DeleteMapping("/admin/categories/delete/{id}")
